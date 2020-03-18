@@ -18,7 +18,7 @@ public class VerificationController {
 
     @GetMapping("/verifyId/{id}")
     public ResponseEntity<?> verifyId(@PathVariable String id) throws IOException {
-        boolean isVerified = verificationService.verifyFromCSV(id);
+        String isVerified = verificationService.verifyFromCSV(id);
         return new ResponseEntity<>(isVerified, HttpStatus.OK);
     }
 }

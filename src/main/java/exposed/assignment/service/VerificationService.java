@@ -11,7 +11,7 @@ import java.net.URL;
 
 @Service
 public class VerificationService {
-    public boolean verifyFromCSV(String licenceId) throws IOException {
+    public String verifyFromCSV(String licenceId) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = null;
         URL resource = classLoader.getResource("dmv.csv");
@@ -24,11 +24,15 @@ public class VerificationService {
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");
                 if (data[1].equals(licenceId)) {
-                    return !data[2].equalsIgnoreCase(LicenceType.SUSPENDED.name());
+                    if (data[2].equalsIgnoreCase(LicenceType.SUSPENDED.name())) {
+                        return licenceId;
+                    } else {
+                        return LicenceType.ACTIVE.name();
+                    }
                 }
             }
             csvReader.close();
         }
-        return false;
+        return null;
     }
 }
